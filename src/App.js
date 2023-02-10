@@ -13,6 +13,7 @@ import TracknowWeb from "./pages/TracknowWeb";
 import TracknowWebMap from "./pages/TracknowWebMap";
 import SubmittedWeb from "./pages/SubmittedWeb";
 import Login from "./pages/Login";
+import MapBox from "./pages/MapBox";
 import { useEffect } from "react";
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
       <Route path="/TracknowWeb" element={<TracknowWeb />} />
       <Route path="/TracknowWebMap" element={<TracknowWebMap />} />
       <Route path="/SubmittedWeb" element={<SubmittedWeb />} />
+      <Route path="/MapBox" element={<MapBox />} />
       {/* <Route path="/" element ={<Login />}/> */}
     </Routes>
   );

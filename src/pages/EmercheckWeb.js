@@ -2,7 +2,10 @@ import { useCallback } from "react";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import styles from "./EmercheckWeb.module.css";
-
+import React,{useEffect, useState} from 'react'
+import { Map,GeolocateControl,Marker } from 'react-map-gl'
+import "mapbox-gl/dist/mapbox-gl.css";
+import axios from 'axios';
 const EmercheckWeb = () => {
   const navigate = useNavigate();
 
@@ -29,6 +32,79 @@ const EmercheckWeb = () => {
   const onEmergencyAlertButtonClick = useCallback(() => {
     navigate("/AddProfileWeb");
   }, [navigate]);
+  const [lat,setLat] = useState()
+  const [lng,setLng] = useState()
+  const [arbitary,setArbitary] = useState({longitude:0,latitude:0})
+  const [coordinates,setCoordinates] = useState([])
+  const [toRender,setToRender] = useState(false)
+  const [emerPoints,setEmerPoints] = useState([])
+  useEffect(()=>{
+    navigator.geolocation.getCurrentPosition(function(position){
+        setLat(position.coords.latitude)
+        setLng(position.coords.longitude)
+    })
+    
+    async function addEmergencyCheck() {
+      const checkpointsemer = await axios.get('http://172.16.200.150:3000/fetchemergency/12345/')
+      
+      console.log(checkpointsemer);
+      setEmerPoints(checkpointsemer.data)
+    }
+    addEmergencyCheck()
+  },[lng,lat,coordinates])
+
+  function addMarker(e) {
+   let coord = coordinates;
+   coord.push([e.lngLat.lng,e.lngLat.lat])
+   setCoordinates(coord)
+   console.log(coordinates)
+   setToRender(prevState => !prevState)
+  }
+
+  function changeArbitary(e) {
+    if(coordinates.length) {
+      let aux = coordinates;
+      console.log(aux)
+      aux.pop()
+      setCoordinates(aux)
+    }
+    setArbitary({
+     longitude: e.lngLat.lng,
+     latitude: e.lngLat.lat
+    })
+    addMarker(e)
+  }
+
+  function setCheckPoint(){
+    // creating an object to send
+    let des = document.getElementById('text-area').value
+    let checkpoint = {
+      latitude: arbitary.latitude,
+      longitude: arbitary.longitude,
+      description: des
+    }
+    console.log(checkpoint)
+    // end point to store this
+    let prevEmerCheck = emerPoints;
+    prevEmerCheck.push(checkpoint)
+    setEmerPoints(prevEmerCheck)
+    console.log(emerPoints)
+    axios.post('http://172.16.200.150:3000/addemergency/12345',emerPoints)
+  }
+
+  function clicked(e) {
+    console.log(e);
+  }
+
+  const searchLocation = async() => {
+    let locationName = document.getElementById('search').value
+    const result = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(locationName)}.json?accsess_token=pk.eyJ1IjoiZ2FudGhlci03NyIsImEiOiJjbDloeXI4dWwwa2swM3ZvMDM0ZDN0emR5In0.3EWcLIvaQ9-yd6cjJQq5cQ`)
+    const location = result.data.features[0].checkpointsemer
+
+    console.log(location)
+  }
+
+  // searchLocation()
 
   return (
     <div className={styles.emercheckWebDiv}>
@@ -120,119 +196,70 @@ const EmercheckWeb = () => {
         src="../icons8profile32-1@2x.png"
       />
       <img className={styles.groupIcon1} alt="" src="../group.svg" />
-      <div className={styles.groupDiv1}>
-        <div className={styles.groupDiv2}>
-          <img
-            className={styles.rectangleIcon}
-            alt=""
-            src="../rectangle-34.svg"
-          />
-          <img className={styles.lineIcon} alt="" src="../line-11.svg" />
-          <div className={styles.groupDiv3}>
-            <div className={styles.rectangleDiv4} />
-          </div>
-          <div className={styles.groupDiv4}>
-            <div className={styles.rectangleDiv5} />
-          </div>
-          <div className={styles.emergencyCheckpointsDiv}>
-            Emergency Checkpoints
-          </div>
-        </div>
-        <img className={styles.lineIcon1} alt="" src="../line-12.svg" />
-      </div>
-      <div className={styles.groupDiv5}>
-        <div className={styles.fullNameDiv}>Full Name</div>
-        <div className={styles.addEmergencyCheckpoints}>
-          Add Emergency Checkpoints
-        </div>
-        <div className={styles.iDNumberDiv}>ID Number</div>
-        <div className={styles.emergencyCheckpointDiv}>
-          Emergency Checkpoint
-        </div>
-        <div className={styles.noteDiv}>Note</div>
-        <TextField
-          className={styles.rectangleTextField}
-          sx={{ width: 325 }}
-          color="secondary"
-          variant="filled"
-          type="text"
-          size="medium"
-          margin="none"
-        />
-        <div className={styles.rectangleDiv6} />
-        <TextField
-          className={styles.rectangleTextField1}
-          sx={{ width: 325 }}
-          color="secondary"
-          variant="filled"
-          type="text"
-          size="medium"
-          margin="none"
-        />
-        <TextField
-          className={styles.rectangleTextField2}
-          sx={{ width: 325 }}
-          color="secondary"
-          variant="filled"
-          type="text"
-          placeholder="eg. of your sciren"
-          size="medium"
-          margin="none"
-        />
-        <TextField
-          className={styles.rectangleTextField3}
-          sx={{ width: 325 }}
-          color="secondary"
-          variant="filled"
-          type="text"
-          size="medium"
-          margin="none"
-        />
-      </div>
-      <img
-        className={styles.mapsicleMapIcon}
-        alt=""
-        src="../mapsicle-map@2x.png"
-      />
-      <Button
-        className={styles.emergencyAlertDiv}
-        sx={{ width: 155 }}
-        variant="contained"
-        href="/officer-analysis-2web"
-        onClick={onEmergencyAlertButtonClick}
+      
+      (lng && <div className={styles.contaimer}>
+      
+      <Map id="my-map"
+        mapboxAccessToken="pk.eyJ1IjoiZ2FudGhlci03NyIsImEiOiJjbDloeXI4dWwwa2swM3ZvMDM0ZDN0emR5In0.3EWcLIvaQ9-yd6cjJQq5cQ"
+        initialViewState={{
+          longitude: lng,
+          latitude: lat,
+          zoom: 8,
+        }}
+        style={{
+            width: '600px',
+            height: '500px',
+            display:'flex',
+            flexDirection:'column'
+        }}
+        onClick={e=>changeArbitary(e)}
+        mapStyle="mapbox://styles/mapbox/streets-v11"
       >
-        Emergency Alert
-      </Button>
-      {/* <div className={styles.emergencyAlertDiv}>Emergency alert </div> */}
-      {/* <div className={styles.rectangleDiv7} /> */}
-      <img
-        className={styles.placeholder1Icon}
-        alt=""
-        src="../placeholder-1@2x.png"
-      />
-      <div className={styles.addEmergencyCheckpoint}>
-        Add emergency checkpoint
-      </div>
-      <img
-        className={styles.icons8Emergency641}
-        alt=""
-        src="../icons8emergency64-1@2x.png"
-      />
-      <div className={styles.rectangleDiv8} />
-      <div className={styles.groupDiv6}>
-        <div className={styles.rectangleDiv9} />
-        <img
-          className={styles.icons8PlusMath241}
-          alt=""
-          src="../icons8plusmath24-1@2x.png"
+        <GeolocateControl
+          positionOptions={{ enableHighAccuracy: true }}
+          trackUserLocation={true}
         />
-        <img
-          className={styles.icons8Minus241}
-          alt=""
-          src="../icons8minus24-1@2x.png"
-        />
-      </div>
-    </div>
+        {(toRender || !toRender)&&
+            coordinates.map((ele)=>{
+                return <Marker 
+                onClick={e=>clicked(e)}
+                longitude={ele[0]}
+                latitude={ele[1]}
+                />
+            })
+        }
+        {
+          (emerPoints && emerPoints.map(ele=>{
+            return <Marker 
+            longitude={ele.longitude}
+            latitude = {ele.latitude}
+            color='red'
+            />
+          }))
+        }
+      </Map>
+        
+     <div className={styles.locationbox}>
+        <div className='heaading'>Add Emergency Chechkpoint</div>
+        <div className='coordinates'>
+          <div>longitude:{arbitary.longitude}</div>
+          <div>latitude:{arbitary.latitude}</div>
+        </div>
+        <div className='desciption'>
+          <textarea name="" id="text-area" cols="30" rows="10" placeholder='word limit : 20 words'></textarea>
+        </div>
+        <button onClick={e=>setCheckPoint()}>create checkpoint</button>
+        <div>
+          <div>checkpoints</div>
+          {emerPoints && emerPoints.map(ele=>{
+            return <div>
+              {ele[0]}
+            </div>
+          })}
+        </div>
+        </div>
+        </div>
+        </div>
   );
 };
 
