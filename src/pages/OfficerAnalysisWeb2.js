@@ -10,10 +10,12 @@ import {
   PieChart,
   Pie,
   Tooltip,
+  BarChart,
   XAxis,
   YAxis,
   Legend,
   CartesianGrid,
+  Bar,
 } from "recharts";
 
 
@@ -82,36 +84,36 @@ const OfficerAnalysisWeb2 = () => {
       { name: "Stop Time  (in minutes)", police:300,fill: '#FFBB28'  },
       { name: "FIR Reported", police: 13,fill: '#0088FE' },
     ];
-    const graphdata = [
-      {
-        name: 'Ayushi ',
-        total_time: 1040,
-        patroling_duration: 740,
-        stop_duration: 300,
-        report: 13,
-      },
-      {
-        name: 'Ankit',
-        total_time: 1540,
-        patroling_duration: 1140,
-        stop_duration: 400,
-        report: 17,
-      },
-      {
-        name: 'Tirth',
-        total_time: 940,
-        patroling_duration: 640,
-        stop_duration: 300,
-        report: 9,
-      },
-      {
-        name: 'Jay',
-        total_time: 1740,
-        patroling_duration: 1590,
-        stop_duration: 150,
-        report: 22,
-      },
-    ];
+    // const graphdata = [
+    //   {
+    //     name: 'Ayushi ',
+    //     total_time: 1040,
+    //     patroling_duration: 740,
+    //     stop_duration: 300,
+    //     report: 13,
+    //   },
+    //   {
+    //     name: 'Ankit',
+    //     total_time: 1540,
+    //     patroling_duration: 1140,
+    //     stop_duration: 400,
+    //     report: 17,
+    //   },
+    //   {
+    //     name: 'Tirth',
+    //     total_time: 940,
+    //     patroling_duration: 640,
+    //     stop_duration: 300,
+    //     report: 9,
+    //   },
+    //   {
+    //     name: 'Jay',
+    //     total_time: 1740,
+    //     patroling_duration: 1590,
+    //     stop_duration: 150,
+    //     report: 22,
+    //   },
+    // ];
 
    
   return (
@@ -238,27 +240,29 @@ const OfficerAnalysisWeb2 = () => {
           <Tooltip />
         </PieChart>
        
-        <LineChart
+        <BarChart
           width={600}
           height={400}
-          data={graphdata}
+          data={piedata}
           margin={{
             top: 5,
             right: 30,
-            left: 20,
+            left: 80,
             bottom: 5,
           }}
+          barSize={20}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis
+            dataKey="name"
+            scale="point"
+            padding={{ left: 10, right: 10 }}
+          />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="total_time" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="patroling_duration" stroke="#82ca9d" />
-          <Line type="monotone" dataKey="stop_duration" stroke="#A7695C" />
-          <Line type="monotone" dataKey="report" stroke="#A75C91" />
-        </LineChart>
+          <CartesianGrid strokeDasharray="3 3" />
+          <Bar dataKey="police" fill="#fff" background={{ fill: "#eee" }} />
+        </BarChart>
       
            </div>
             </div>
