@@ -355,6 +355,15 @@
   width: 38.77px;
   height: 37.66px;
 }
+.groupIcon5,
+.lineDiv {
+  position: absolute;
+  top: 177.4px;
+  left: 186.44px;
+  width: 38.77px;
+  height: 37.66px;
+  margin-top: 12px;
+}
 .lineDiv {
   top: 62.5px;
   left: 139.5px;

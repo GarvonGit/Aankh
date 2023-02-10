@@ -4,7 +4,7 @@
   left: -3px;
   background-color: var(--color-indigo-100);
   width: 283px;
-  height: 982px;
+  height: 1192px;
 }
 .icons8Analytics301 {
   position: absolute;
@@ -266,7 +266,7 @@
   position: absolute;
   top: 158.77px;
   left: 713px;
-  font-size: var(--font-size-3xl);
+  font-size: 35px;
   font-weight: 600;
   color: var(--color-white);
   text-align: right;
@@ -589,11 +589,20 @@
 .officerAnalysis2Web {
   position: relative;
   background-color: var(--color-white);
-  width: 100%;
-  height: 982px;
+  width: 150%;
+  height: 1292px;
   overflow: hidden;
   text-align: left;
   font-size: var(--font-size-xs);
   color: var(--color-black);
   font-family: var(--font-poppins);
+}
+.hemlo{
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 450px;
+  margin-left: 200px;
+  width: 400px;
 }

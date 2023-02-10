@@ -1,6 +1,21 @@
-import { useCallback } from "react";
+import { useCallback,useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
+import analysisData from "./Analysis_Data.json";
+import {useTable} from "react-table";
+import * as React from "react";
 import styles from "./OfficerAnalysisWeb2.module.css";
+import "./Table.css";
+import { LineChart, Line} from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Tooltip,
+  XAxis,
+  YAxis,
+  Legend,
+  CartesianGrid,
+} from "recharts";
+
 
 const OfficerAnalysisWeb2 = () => {
   const navigate = useNavigate();
@@ -24,7 +39,81 @@ const OfficerAnalysisWeb2 = () => {
   const onAddProfileTextClick = useCallback(() => {
     navigate("/AddProfileWeb");
   }, [navigate]);
+  const data = React.useMemo(() => analysisData, []);
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "DATE",
+        accessor: "date",
+      },
+      {
+        Header: "START TIME",
+        accessor: "start_time",
+      },
+      {
+        Header: "END TIME",
+        accessor: "end_time",
+      },
+      {
+        Header: "DURATION",
+        accessor: "duration",
+      },
+      {
+        Header: "FIR REPORTED",
+        accessor: "fir",
+      },
+      {
+        Header: "START CHECKPOINT",
+        accessor: "start_check",
+      },
+      {
+        Header: "END CHECKPOINT",
+        accessor: "end_check",
+      }
+    ],
+    []
+    
+  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data });
+    const piedata = [
+      { name: "Total Time  (in minutes)", police:1040,fill: '#00C49F' },
+      { name: "Patroling Time (in minutes)", police: 740,fill: '#FF8042' },
+      { name: "Stop Time  (in minutes)", police:300,fill: '#FFBB28'  },
+      { name: "FIR Reported", police: 13,fill: '#0088FE' },
+    ];
+    const graphdata = [
+      {
+        name: 'Ayushi ',
+        total_time: 1040,
+        patroling_duration: 740,
+        stop_duration: 300,
+        report: 13,
+      },
+      {
+        name: 'Ankit',
+        total_time: 1540,
+        patroling_duration: 1140,
+        stop_duration: 400,
+        report: 17,
+      },
+      {
+        name: 'Tirth',
+        total_time: 940,
+        patroling_duration: 640,
+        stop_duration: 300,
+        report: 9,
+      },
+      {
+        name: 'Jay',
+        total_time: 1740,
+        patroling_duration: 1590,
+        stop_duration: 150,
+        report: 22,
+      },
+    ];
 
+   
   return (
     <div className={styles.officerAnalysis2Web}>
       <div className={styles.rectangleDiv} />
@@ -100,124 +189,80 @@ const OfficerAnalysisWeb2 = () => {
       <div className={styles.groupDiv3}>
         <div className={styles.rectangleDiv6} />
       </div>
-      <b className={styles.may22B}>
-        <p className={styles.p}>20</p>
-        <p className={styles.p}>May</p>
-        <p className={styles.p1}>22</p>
-      </b>
+     
       <div className={styles.groupDiv4}>
-        <div className={styles.groupDiv5}>
-          <div className={styles.groupDiv5}>
-            <div className={styles.rectangleDiv7} />
-            <div className={styles.rectangleDiv8} />
-            <div className={styles.rectangleDiv9} />
-            <div className={styles.rectangleDiv10} />
-            <div className={styles.rectangleDiv11} />
-            <div className={styles.rectangleDiv12} />
-            <div className={styles.frameDiv}>
-              <div className={styles.startTimeDiv}>
-                <span>Start</span>
-                <span className={styles.span}>{` `}</span>
-                <span>time</span>
-              </div>
-            </div>
-            <div className={styles.pMDiv}>11:00 PM</div>
-            <div className={styles.pMDiv1}>11:00 PM</div>
-            <div className={styles.aMDiv}>11:00 PM</div>
-            <div className={styles.pMDiv3}>11:00 PM</div>
-            <div className={styles.eNDDiv}>11:00 PM</div>
-          </div>
-        </div>
-        <div className={styles.groupDiv5}>
-          <div className={styles.groupDiv5}>
-            <div className={styles.rectangleDiv7} />
-            <div className={styles.rectangleDiv8} />
-            <div className={styles.rectangleDiv9} />
-            <div className={styles.rectangleDiv10} />
-            <div className={styles.rectangleDiv11} />
-            <div className={styles.rectangleDiv12} />
-            <div className={styles.frameDiv}>
-              <div className={styles.startTimeDiv}>
-                <span>Start</span>
-                <span className={styles.span}>{` `}</span>
-                <span>time</span>
-              </div>
-            </div>
-            <div className={styles.pMDiv}>11:00 PM</div>
-            <div className={styles.pMDiv1}>11:55 PM</div>
-            <div className={styles.aMDiv}>01:44 AM</div>
-            <div className={styles.pMDiv3}>04:10 AM</div>
-            <div className={styles.eNDDiv}>{`06:28 AM `}</div>
-          </div>
-        </div>
-        <div className={styles.groupDiv9}>
-          <div className={styles.groupDiv5}>
-            <div className={styles.rectangleDiv7} />
-            <div className={styles.rectangleDiv8} />
-            <div className={styles.rectangleDiv9} />
-            <div className={styles.rectangleDiv10} />
-            <div className={styles.rectangleDiv11} />
-            <div className={styles.rectangleDiv11} />
-            <div className={styles.rectangleDiv12} />
-            <div className={styles.frameDiv}>
-              <div className={styles.startTimeDiv}>Duration</div>
-            </div>
-            <div className={styles.pMDiv}>43 mins</div>
-            <div className={styles.hr33minsDiv}>1hr 33mins</div>
-            <div className={styles.hr16minsDiv}>{`1hr 16mins `}</div>
-            <div className={styles.hr10Mins}>2hr 10 mins</div>
-            <div className={styles.eNDDiv}>END</div>
-          </div>
-        </div>
-        <div className={styles.groupDiv11}>
-          <div className={styles.groupDiv5}>
-            <div className={styles.rectangleDiv7} />
-            <div className={styles.rectangleDiv8} />
-            <div className={styles.rectangleDiv9} />
-            <div className={styles.rectangleDiv10} />
-            <div className={styles.rectangleDiv11} />
-            <div className={styles.rectangleDiv12} />
-            <div className={styles.frameDiv}>
-              <div className={styles.startTimeDiv}>
-                <span>StOP</span>
-                <span className={styles.span}>{` `}</span>
-                <span>time</span>
-              </div>
-            </div>
-            <div className={styles.pMDiv}>11:43 PM</div>
-            <div className={styles.pMDiv1}>01:28 AM</div>
-            <div className={styles.aMDiv}>03:00 AM</div>
-            <div className={styles.pMDiv3}>06:20 AM</div>
-            <div className={styles.eNDDiv}>07:00 AM</div>
-          </div>
-        </div>
+        
+      <div className="container">
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()}> {cell.render("Cell")} </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+       
       </div>
-      <img className={styles.lineIcon2} alt="" src="../line-16.svg" />
-      <div className={styles.lineDiv} />
-      <b className={styles.fIRReportB}>FIR Report</b>
-      <div className={styles.dateAndHourOfOccruence}>
-        Date and hour of occruence :
-      </div>
-      <div className={styles.residenceOfComplainant}>
-        Residence of Complainant :
-      </div>
-      <div className={styles.placeOfOccruence}>Place of occruence :</div>
-      <div className={styles.nameAndAddressOfCriminal}>
-        Name and address of Criminal :
-      </div>
-      <div className={styles.proofOfComplain}>Proof of complain :</div>
-      <div className={styles.nameOfComplainant}>Name of Complainant :</div>
-      <div className={styles.rectangleDiv32} />
-      <div className={styles.rectangleDiv33} />
-      <div className={styles.rectangleDiv34} />
-      <div className={styles.rectangleDiv35} />
-      <div className={styles.rectangleDiv36} />
-      <div className={styles.rectangleDiv37} />
-      <img
-        className={styles.untitledDesign1}
-        alt=""
-        src="../untitled-design-1@2x.png"
-      />
+      <div className={styles.hemlo}>
+           
+      <PieChart width={500} height={400}>
+          <Pie
+            dataKey="police"
+            isAnimationActive={false}
+            data={piedata}
+            cx={200}
+            cy={200}
+            outerRadius={175}
+  
+            fill="#fff"
+            label
+          />
+          
+          <Tooltip />
+        </PieChart>
+       
+        <LineChart
+          width={600}
+          height={400}
+          data={graphdata}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="total_time" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="patroling_duration" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="stop_duration" stroke="#A7695C" />
+          <Line type="monotone" dataKey="report" stroke="#A75C91" />
+        </LineChart>
+      
+           </div>
+            </div>
+            
     </div>
   );
 };

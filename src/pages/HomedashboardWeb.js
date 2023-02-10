@@ -183,7 +183,8 @@ const HomedashboardWeb = () => {
           <p className={styles.addOrDelete}>of any police officer for</p>
           <p className={styles.patrolling}>patrolling.</p>
         </div>
-        <img className={styles.groupIcon4} alt="" src="../group-24.svg" />
+        <a href="/AddProfileWeb"><img className={styles.groupIcon4} alt="" src="../group-24.svg"/></a>
+        
         <div className={styles.lineDiv} />
         <img className={styles.groupIcon3} alt="" src="../group-231.svg" />
       </div>
@@ -204,7 +205,7 @@ const HomedashboardWeb = () => {
           Immediately sends a notification to the police personnel in case of
           emergency.
         </div>
-        <img className={styles.groupIcon4} alt="" src="../group-24.svg" />
+        <a href="/EmercheckWeb"><img className={styles.groupIcon5} alt="" src="../group-24.svg"/></a>
         <img className={styles.lineIcon4} alt="" src="../line-122.svg" />
         <img className={styles.groupIcon3} alt="" src="../group-23.svg" />
       </div>
@@ -225,7 +226,7 @@ const HomedashboardWeb = () => {
             the asked police offical about there patrolling
           </p>
         </div>
-        <img className={styles.groupIcon4} alt="" src="../group-24.svg" />
+        <a href="/OfficerAnalysisWeb"><img className={styles.groupIcon4} alt="" src="../group-24.svg"/></a>
         <div className={styles.lineDiv1} />
         <img className={styles.groupIcon3} alt="" src="../group-231.svg" />
       </div>

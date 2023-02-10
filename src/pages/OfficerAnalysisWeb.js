@@ -31,8 +31,8 @@ const OfficerAnalysisWeb = () => {
   }, [navigate]);
   const [userRegistration,setUserRegistration]= useState({
     fullname1:"",
-    idnumber1:"",
-    date1:""
+    idnumber1:""
+    
   });
   const [records,setRecords]=useState([]);
   const handleInput = (e) => {
@@ -47,7 +47,7 @@ const OfficerAnalysisWeb = () => {
       console.log(records);
       setRecords([...records,newRecord]);
 
-      setUserRegistration({fullname1: "",idnumber1:"",date1:""});
+      setUserRegistration({fullname1: "",idnumber1:""});
  }
   return (
     <div className={styles.officerAnalysisWebDiv}>
@@ -155,31 +155,25 @@ const OfficerAnalysisWeb = () => {
         <div className={styles.officerAnalysisDiv1}>Officer Analysis</div>
       </div>
       <img className={styles.lineIcon1} alt="" src="../line-12.svg" />
-      <form action="" onSubmit={handleSubmit} className={styles.grp1}>
+      <form action="" onSubmit={handleSubmit} className={styles.grp2}>
         <div >
           <label htmlFor="fullname1">Full Name</label>
-          <input  type="text" autocomplete="off"
+          <input  type="text" autocomplete="off" className={styles.ip1}
           value ={userRegistration.fullname1}
           onChange={handleInput}
           name="fullname1" id="fullname1"/>
         </div>
         <div >
           <label htmlFor="idnumber1">ID Number</label>
-          <input type="text"autocomplete="off"
+          <input type="text"autocomplete="off" className={styles.ip1}
           value ={userRegistration.idnumber1}
           onChange={handleInput}
            name="idnumber1" id="idnumber1"/>
         </div>
-        <div >
-          <label htmlFor="date1">Date</label>
-          <input type="date" autocomplete="off"
-          value ={userRegistration.date1}
-          onChange={handleInput}
-          name="date1" id="date1"/>
-        </div>
         <Button
         className={styles.groupButton}
         type = "submit"
+        href="/OfficerAnalysisWeb2"
       >
         Get Analysis
       </Button>
@@ -191,7 +185,7 @@ const OfficerAnalysisWeb = () => {
               <div className="showDataStyle" key={curElem.id}>
                 <p>{curElem.fullname1}</p>
                 <p>{curElem.idnumber1}</p>
-                <p>{curElem.date1}</p>
+        
               </div>
             )
           })

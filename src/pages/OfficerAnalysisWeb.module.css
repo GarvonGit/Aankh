@@ -280,7 +280,7 @@
   cursor: pointer;
   font-size: 25px;
   right: 130px;
-  margin-top: 100px;
+  margin-top: 60px;
   width: 280px;
   height: 80px;
 }
@@ -360,11 +360,12 @@
   color: var(--color-white);
   font-family: var(--font-poppins);
 }
-.grp1{
+.grp2{
   position: relative;
   width : 555px;
-  margin-left: 500px;
-  margin-top: 350px;
+  height: 80%;
+  margin-left: 320px;
+  margin-top: 250px;
   }
   label {
     position: relative;
@@ -389,4 +390,8 @@
       padding: 0.5em;
       font-size: 25px;
     }
-  
+  .ip1{
+    font-size: 35px;
+    font-weight: bolder;
+    padding:0.7rem ;
+  }
