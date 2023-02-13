@@ -76,3 +76,17 @@ patterns to cover a major area in the least human efforts.
 ### Demo 💫
 ![](https://github.com/Team-2950/Web/blob/main/Demo/AANKH.mp4)
 
+## Home DashBorad 
+![](https://github.com/ayushi-8102/AKAM-webFrontend/blob/master/Demo/homedashboard.png)
+<br>
+## Track Now
+![](https://github.com/ayushi-8102/AKAM-webFrontend/blob/master/Demo/track-now.png)
+<br>
+## Officer Analysis
+![](https://github.com/ayushi-8102/AKAM-webFrontend/blob/master/Demo/officeranalysis.png)
+<br>
+## Emergency Checkpoints
+![](https://github.com/ayushi-8102/AKAM-webFrontend/blob/master/Demo/emercheck.png)
+<br>
+## Add Profile
+![](https://github.com/ayushi-8102/AKAM-webFrontend/blob/master/Demo/add%20profile.png)
