@@ -1,7 +1,11 @@
-import { useCallback,useState } from "react";
+import { useCallback,useState,useEffect } from "react";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import styles from "./TracknowWeb.module.css";
+
+import { Map, GeolocateControl, Marker } from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import axios from "axios";
 
 const TracknowWeb = () => {
   const navigate = useNavigate();
@@ -30,26 +34,76 @@ const TracknowWeb = () => {
     navigate("/tracknowweb1");
   }, [navigate]);
 
- 
-    const [userRegistration,setUserRegistration]= useState({
-      fullname:"",
-      idnumber:""
-    });
-    const [records,setRecords]=useState([]);
-    const handleInput = (e) => {
-      const name=e.target.name;
-      const value=e.target.value;
-      console.log(name,value);
-      setUserRegistration({...userRegistration,[name]:value});
-    }
-   const handleSubmit =(e) => {
-        e.preventDefault();
-        const newRecord = {...userRegistration, id: new Date().getTime().toString() }
-        console.log(records);
-        setRecords([...records,newRecord]);
 
-        setUserRegistration({fullname: "",idnumber:""});
-   }
+  const [lat, setLat] = useState(23.022168903229044);
+  const [lng, setLng] = useState(72.54626279296826);
+  const [coordinates, setCoordinates] = useState([]);
+  const [toRender, setToRender] = useState(false);
+  const [location,setLocation] = useState({
+    longitude:0,
+    latitude:0
+  })
+  const [officer,setOfficer] = useState([])
+  const [checkpoints,setCheckPoints] = useState([])
+  const [officerData,setOfficerData] = useState([])
+
+  useEffect(()=> {
+    const fetchData = async () => {
+      const data = await axios.get('http://172.16.200.150:3000/patrolingofficers/12345/currentlocation')
+      console.log(data);
+      setLocation({
+        longitude:data.data[0].longitude,
+        latitude:data.data[0].latitude
+      })
+      setToRender(prev => !prev)
+      setTimeout(fetchData,2000)
+    }
+    fetchData()
+  },[])
+
+
+useEffect(() => {
+  const fetchRoute = async() => {
+    const data = await axios.get(`http://172.16.200.150:3000/patrolingofficers/${officer}/checkpoint`)
+    if(!data) console.log('not able to fetch chekckpoints')
+    console.log(data);
+    setCheckPoints(data.data)
+  }
+  fetchRoute()
+},[]) 
+
+
+
+  async function searchOfficer(e) {
+    let id = document.getElementById('unique-id').value
+    console.log(id);
+    setOfficer(id)
+    const officerData = await axios.get(`http://172.16.200.150:3000/patrolingofficers/${id}/profile`)
+    console.log(officerData)
+    setOfficerData(officerData.data)
+
+    const fetchRoute = async() => {
+      const data = await axios.get(`http://172.16.200.150:3000/patrolingofficers/${id}/checkpoint`)
+      if(!data) console.log('not able to fetch chekckpoints')
+      console.log(data);
+      setCheckPoints(data.data)
+    }
+    fetchRoute()
+
+    const fetchData = async () => {
+      const data = await axios.get(`http://172.16.200.150:3000/patrolingofficers/${id}/currentlocation`)
+      console.log(data);
+      setLocation({
+        longitude:data.data[0].longitude,
+        latitude:data.data[0].latitude
+      })
+      setToRender(prev => !prev)
+      setTimeout(fetchData,2000)
+    }
+    fetchData()
+  }
+
+
   return (
     <div className={styles.tracknowWebDiv}>
       <div className={styles.rectangleDiv} />
@@ -140,57 +194,60 @@ const TracknowWeb = () => {
         src="../icons8profile32-1@2x.png"
       />
       <img className={styles.groupIcon1} alt="" src="../group2.svg" />
-      <div className={styles.groupDiv1}>
-        <img
-          className={styles.rectangleIcon}
-          alt=""
-          src="../rectangle-341.svg"
-        />
-        <img className={styles.lineIcon} alt="" src="../line-115.svg" />
-        <div className={styles.groupDiv2}>
-          <div className={styles.rectangleDiv4} />
+      
+        <Map
+          id="my-map"
+          mapboxAccessToken="pk.eyJ1IjoiZ2FudGhlci03NyIsImEiOiJjbDloeXI4dWwwa2swM3ZvMDM0ZDN0emR5In0.3EWcLIvaQ9-yd6cjJQq5cQ"
+          initialViewState={{
+            longitude: lng,
+            latitude: lat,
+            zoom: 12,
+            
+          }}
+          style={{
+            width: "1000px",
+            height: "800px",
+            display: "flex",
+            flexDirection: "column",
+            position: "absolute",
+            left: 290,
+            top:10
+          }}
+          
+          mapStyle="mapbox://styles/mapbox/streets-v11"
+        >
+          <GeolocateControl
+            positionOptions={{ enableHighAccuracy: true }}
+            trackUserLocation={true}
+          />
+          <Marker 
+          longitude={location.longitude}
+          latitude={location.latitude}
+          />
+
+          {checkpoints && checkpoints.map((ele,key) => {
+            return <Marker 
+            longitude={ele.longitude}
+            latitude={ele.latitude}
+            key = {key}
+            color = 'red'
+            />
+          })}
+
+        </Map>
+
+        <div className={styles.uniqueId}>
+          <input type="number" id= 'unique-id' className={styles.inputID} placeholder='officer id'/>
+          <div className={styles.currentLocation}>
+          <div className={styles.info}>
+            <div className={styles.row}><div>Name</div> <div className={styles.spanInfo}>{officerData.name}</div></div>
+            <div className={styles.row}><div>Designation</div> <div className={styles.spanInfo}>{officerData.designation}</div></div>
+          </div>
+            <div className={styles.row}><div>Longitude</div><div className={styles.spanInfo}>{location.longitude}</div></div>
+            <div className={styles.row}><div>Latitude</div><div className={styles.spanInfo}>{location.latitude}</div></div>
+          </div>
+          <button onClick = {e=>searchOfficer(e)}>Search</button>
         </div>
-        <div className={styles.groupDiv3}>
-          <div className={styles.rectangleDiv5} />
-        </div>
-        <div className={styles.trackNowDiv1}>Track Now</div>
-      </div>
-      <img className={styles.lineIcon1} alt="" src="../line-12.svg" />
-      <form action="" onSubmit={handleSubmit} className={styles.grp1}>
-        <div >
-          <label htmlFor="fullname">Full Name</label>
-          <input className={styles.fullname} type="text" autocomplete="off"
-          value ={userRegistration.fullname}
-          onChange={handleInput}
-          name="fullname" id="fullname"/>
-        </div>
-        <div >
-          <label htmlFor="idnumber">ID Number</label>
-          <input type="text"autocomplete="off"
-          value ={userRegistration.idnumber}
-          onChange={handleInput}
-           name="idnumber" id="idnumber"/>
-        </div>
-        <Button className={styles.groupButton}
-        type = "submit"
-       
-      >
-        Track
-      </Button>
-      </form>
-      <div>
-         {
-          records.map((curElem)=>{
-            return(
-              <div className="showDataStyle" key={curElem.id}>
-                <p>{curElem.fullname}</p>
-                <p>{curElem.idnumber}</p>
-              </div>
-            )
-          })
-         }
-      </div>
-      <div className={styles.rectangleDiv6} />
     </div>
   );
 };

@@ -33,36 +33,71 @@ const AddProfileWeb = () => {
   const onADDTextClick = useCallback(() => {
     navigate("/SubmittedWeb");
   }, [navigate]);
-  const [userRegistration,setUserRegistration]= useState({
-    fullname:"",
-    lastname:"",
-    idnumber:"",
-    beatlocation:"",
-    checkpoint1:"",
-    checkpoint2:""
+//   const [userRegistration,setUserRegistration]= useState({
+//     name:"",
+//     idnumber:"",
+//     designation:"",
+//     dateofbirth:"",
+//     bloodgroup:"",
+//     area:""
 
 
-  });
-  const [records,setRecords]=useState([]);
-  const handleInput = (e) => {
-    const name=e.target.name;
-    const value=e.target.value;
-    console.log(name,value);
-    setUserRegistration({...userRegistration,[name]:value});
-  }
- const handleSubmit =(e) => {
+//   });
+//   const [records,setRecords]=useState([]);
+//   const handleInput = (e) => {
+//     const name=e.target.name;
+//     const value=e.target.value;
+//     console.log(name,value);
+//     setUserRegistration({...userRegistration,[name]:value});
+//   }
+//  const handleSubmit =(e) => {
+//       e.preventDefault();
+//       const newRecord = {...userRegistration, id: new Date().getTime().toString() }
+//       console.log(records);
+//       setRecords([...records,newRecord]);
+
+//       setUserRegistration({name: "", designation:"",
+//     idnumber:"",
+//     dateofbirth:"",
+//     bloodgroup:"",
+//     area:""});
+//  }
+ const [name, setFname] = useState("");
+  const [id, setID] = useState("");
+  const [designation, setDegisnation] = useState("");
+  const [dateofbirth, setdateofbirth] = useState("");
+  const [bloodgroup, setbloodgroup] = useState("");
+  const [area, setArea] = useState("");
+  
+
+  const handleSubmit = (e) => {
+
       e.preventDefault();
-      const newRecord = {...userRegistration, id: new Date().getTime().toString() }
-      console.log(records);
-      setRecords([...records,newRecord]);
 
-      setUserRegistration({fullname: "", lastname:"",
-    idnumber:"",
-    beatlocation:"",
-    checkpoint1:"",
-    checkpoint2:""});
- }
-
+      console.log(name, id, designation, dateofbirth,bloodgroup,area);
+      fetch("http://172.16.200.150:3000/user/addprofile", {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+         name, id, designation, dateofbirth,bloodgroup,area
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data, "userRegister");
+          if (data.status == "ok") {
+            alert("Registration Successful");
+          } else {
+            alert("Profile Added");
+          }
+        });
+    
+  };
   return (
     <div className={styles.addProfileWebDiv}>
       <div className={styles.rectangleDiv} />
@@ -174,100 +209,52 @@ const AddProfileWeb = () => {
       <form action="" onSubmit={handleSubmit} className={styles.grp3}>
         <div input>
         <div >
-          <label htmlFor="fullname">First Name</label>
-          <input className={styles.fullname} type="text" autocomplete="off"
-          value ={userRegistration.fullname}
-          onChange={handleInput}
-          name="fullname" id="fullname"/>
+          <label htmlFor="name">Full Name</label>
+          <input className={styles.ap} type="text" placeholder=" Enter Full name"
+              onChange={(e) => setFname(e.target.value)}
+                />
         </div>
-        <div >
-          <label htmlFor="lastname">Last Name</label>
-          <input className={styles.lastname} type="text" autocomplete="off"
-          value ={userRegistration.lastname}
-          onChange={handleInput}
-          name="lastname" id="lastname"/>
-        </div>
+        
         <div >
           <label htmlFor="idnumber">ID Number</label>
-          <input type="text"autocomplete="off"
-          value ={userRegistration.idnumber}
-          onChange={handleInput}
-           name="idnumber" id="idnumber"/>
+          <input className={styles.ap} type="text"placeholder="Enter ID Number"
+              onChange={(e) => setID(e.target.value)}
+                />
+        </div>
+        <div >
+          <label htmlFor="designation">Designation</label>
+          <input className={styles.ap} type="text" placeholder="Enter Designation"
+              onChange={(e) => setDegisnation(e.target.value)}
+                />
         </div>
         <div >
 
-          <label className={styles.label3} htmlFor="beatlocation">Beat Location</label>
-          <input className={styles.beatlocation} type="number" autocomplete="off"
-          value ={userRegistration.beatlocation}
-          onChange={handleInput}
-          name="beatlocation" id="beatlocation"/>
+          <label  htmlFor="dateofbirth">Date Of Birth</label>
+          <input className={styles.ap} type="date" placeholder="Enter Date Of Birth"
+              onChange={(e) => setdateofbirth(e.target.value)}
+                />
         </div>
         <div >
-          <label htmlFor="uploadphoto">Upload Photo</label>
-          <input type="file"autocomplete="off"
-           name="uploadphoto" id="uploadphoto"/>
+          <label htmlFor="bloodgroup">Blood Group</label>
+          <input className={styles.ap} type="text" placeholder="Enter Blood Group"
+              onChange={(e) => setbloodgroup(e.target.value)}
+                />
         </div>
-        <Button className={styles.groupButton3}
-        type = "submit"
-       
-      >
-        Add Profile
-      </Button>
+        <div >
+          <label htmlFor="area">Patrol Area</label>
+          <input className={styles.ap} type="text" placeholder="Enter Area"
+              onChange={(e) => setArea(e.target.value)}
+                />
+        </div>
+      
+        
+            <button type="submit" className={styles.groupButton3}>
+             Add Profile
+            </button>
+          
       </div>
       </form>
       
-      <div>
-         {
-          records.map((curElem)=>{
-            return(
-              <div className="showDataStyle" key={curElem.id}>
-                <p>{curElem.fullname}</p>
-                <p>{curElem.idnumber}</p>
-              </div>
-            )
-          })
-         }
-      </div>
-      <img
-        className={styles.mapsicleMapIcon}
-        alt=""
-        src="../mapsicle-map@2x.png"
-      />
-      <div className={styles.groupDiv6}>
-        <div className={styles.rectangleDiv7} />
-        <img
-          className={styles.icons8PlusMath241}
-          alt=""
-          src="../icons8plusmath24-1@2x.png"
-        />
-        <img
-          className={styles.icons8Minus241}
-          alt=""
-          src="../icons8minus24-1@2x.png"
-        />
-      </div>
-      <form action="" onSubmit={handleSubmit} className={styles.grp3}>
-        <div >
-          <label htmlFor="checkpoint1">Enter Check Point 1</label>
-          <input className={styles.checkpoint1} type="number" autocomplete="off"
-          value ={userRegistration.checkpoint1}
-          onChange={handleInput}
-          name="checkpoint1" id="checkpoint1"/>
-        </div>
-        <div >
-          <label htmlFor="checkpoint2">Enter Check Point 2</label>
-          <input type="number"autocomplete="off"
-          value ={userRegistration.idnumber}
-          onChange={handleInput}
-           name="checkpoint2" id="checkpoint2"/>
-        </div>
-        <Button className={styles.groupButton}
-        type = "submit"
-       
-      >
-        Track
-      </Button>
-      </form>
       <div className={styles.rectangleDiv8} />
       
       

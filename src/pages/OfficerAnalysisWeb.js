@@ -1,5 +1,5 @@
 import { useCallback ,useState} from "react";
-import { Button, TextField } from "@mui/material";
+import { Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import styles from "./OfficerAnalysisWeb.module.css";
 
@@ -29,26 +29,40 @@ const OfficerAnalysisWeb = () => {
   const onGroupButtonClick = useCallback(() => {
     navigate("/OfficerAnalysisWeb2");
   }, [navigate]);
-  const [userRegistration,setUserRegistration]= useState({
-    fullname1:"",
-    idnumber1:""
-    
-  });
-  const [records,setRecords]=useState([]);
-  const handleInput = (e) => {
-    const name=e.target.name;
-    const value=e.target.value;
-    console.log(name,value);
-    setUserRegistration({...userRegistration,[name]:value});
-  }
+  const [name, setFname] = useState("");
+  const [id, setID] = useState("");
+  
  const handleSubmit =(e) => {
       e.preventDefault();
-      const newRecord = {...userRegistration, id: new Date().getTime().toString() }
-      console.log(records);
-      setRecords([...records,newRecord]);
-
-      setUserRegistration({fullname1: "",idnumber1:""});
- }
+      console.log(name, id);
+      fetch("http://172.16.200.150:3000/patrolingofficers/:idnumber/profile", {
+        method: "GET",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+         name, id}),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data, "userRegister");
+          if (data.status == "ok") {
+            alert("Successful");
+          } else {
+            alert("User Found");
+          }
+        });
+      };
+      function SubmitButton(){
+        if (name && id){
+          return <button type="button">Get Analysis</button>
+        } else {
+          return <button type="button" disabled>Get Analysis</button>
+        };
+      };
   return (
     <div className={styles.officerAnalysisWebDiv}>
       <div className={styles.rectangleDiv} />
@@ -157,19 +171,18 @@ const OfficerAnalysisWeb = () => {
       <img className={styles.lineIcon1} alt="" src="../line-12.svg" />
       <form action="" onSubmit={handleSubmit} className={styles.grp2}>
         <div >
-          <label htmlFor="fullname1">Full Name</label>
-          <input  type="text" autocomplete="off" className={styles.ip1}
-          value ={userRegistration.fullname1}
-          onChange={handleInput}
-          name="fullname1" id="fullname1"/>
+          <label htmlFor="name">Full Name</label>
+          <input  type="text" className={styles.ip1}
+          onChange={(e) => setFname(e.target.value)}
+          name="name" id="name"/>
         </div>
         <div >
-          <label htmlFor="idnumber1">ID Number</label>
-          <input type="text"autocomplete="off" className={styles.ip1}
-          value ={userRegistration.idnumber1}
-          onChange={handleInput}
-           name="idnumber1" id="idnumber1"/>
+          <label htmlFor="id">ID Number</label>
+          <input type="text" className={styles.ip1}
+          onChange={(e) => setID(e.target.value)}
+           name="id" id="id"/>
         </div>
+         if (name && id){
         <Button
         className={styles.groupButton}
         type = "submit"
@@ -177,20 +190,18 @@ const OfficerAnalysisWeb = () => {
       >
         Get Analysis
       </Button>
+}
+else{
+  <Button
+  className={styles.groupButton}
+  type = "submit"
+  disabled
+>
+  Get Analysis
+</Button>
+
+}
       </form>
-      <div>
-         {
-          records.map((curElem)=>{
-            return(
-              <div className="showDataStyle" key={curElem.id}>
-                <p>{curElem.fullname1}</p>
-                <p>{curElem.idnumber1}</p>
-        
-              </div>
-            )
-          })
-         }
-      </div>
       <div className={styles.groupDiv4}>
         <div className={styles.rectangleDiv6} />
       </div>

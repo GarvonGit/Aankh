@@ -321,7 +321,7 @@
 .tracknowWebDiv {
   position: relative;
   background-color: var(--color-white);
-  width: 150%;
+  width: 100vw;
   height: 982px;
   overflow: hidden;
   text-align: right;
@@ -337,7 +337,7 @@ margin-top: 350px;
 }
 label {
   position: relative;
-    color: #555;
+    color: rgb(211, 191, 191);
     display: block;
     padding: 10px;
     margin: 3px;
@@ -351,4 +351,73 @@ label {
   input{
   font-size: 22px;
   font-weight: bolder;
+  background-color: blue;
   }
+
+
+.uniqueId {
+  width:400px;
+  height:300px;
+  color:#301565;
+  position: absolute;
+  right: -40px;
+  top:300px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  background-color: #E9E9E9;
+}
+
+.uniqueId button {
+  margin-top: 20px;
+  width:200px;
+  height:100px;
+  border-radius: 10px;
+  border: none;
+  background-color: #301565;
+  color:white;
+  font-size: 20px;
+}
+
+.uniqueId .row {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.inputID{
+  background-color: #301565;
+  color: #fff;
+  width: 100%;
+  height:40px;
+  outline: none;
+}
+
+.currentLocation{
+  display:flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+  font:15px;
+}
+
+.info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.row {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: flex-start;
+  width:100%;
+  font-weight: bold;
+}
+
+.spanInfo{
+  margin-left: 20px;
+  font-weight: 400;
+}

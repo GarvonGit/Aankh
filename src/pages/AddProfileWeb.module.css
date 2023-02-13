@@ -4,7 +4,7 @@
   left: -3px;
   background-color: var(--color-indigo-100);
   width: 283px;
-  height: 1192px;
+  height: 1692px;
 }
 .icons8Analytics301 {
   position: absolute;
@@ -518,7 +518,7 @@
   position: relative;
   background-color: var(--color-white);
   width: 150%;
-  height: 1192px;
+  height: 1692px;
   overflow: hidden;
   text-align: right;
   font-size: var(--font-size-5xs);
@@ -527,24 +527,18 @@
 }
 .grp3{
   position: relative;
-  width : 555px;
-  height: 80%;
-  margin-left: 320px;
+  width : 355px;
+  height: 50%;
+  margin-left: 420px;
   margin-top: 250px;
   }
-  
-  .label3 {
-    position: relative;
-      color: #555;
-      display: block;
-      padding: 1px;
-      margin: 3px;
-      right: 250px;
-      text-size-adjust: 150px;
-      font-size: 20px;
-      margin-top: 10px;
-  
+  .ap{
+    font-size: 20px;
+    padding:0.4rem ;
+    width: 500px;
+    height: 50px;
   }
+  
   .groupButton3 {
     position: relative;
     background-color: #301565;
